@@ -58,7 +58,4 @@ if __name__ == '__main__':
     print(f"Recall: {recall:.4f}")
     print(f"F1 Score: {f1:.4f}")
 
-    cm_display = ConfusionMatrixDisplay(confusion_matrix=confusion_mat, display_labels=classes)
-    cm_display.plot(cmap='Blues', values_format='d')
-    plt.title('Confusion Matrix')
-    plt.show()
+
