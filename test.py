@@ -1,8 +1,10 @@
 import torch
+from matplotlib import pyplot as plt
 from torch.utils.data import DataLoader
 from torchvision import transforms
 from torchvision.datasets import ImageFolder
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix
+from sklearn.metrics import ConfusionMatrixDisplay
 
 from utils import SqueezeNet, VGG11
 
@@ -55,6 +57,8 @@ if __name__ == '__main__':
     print(f"Precision: {precision:.4f}")
     print(f"Recall: {recall:.4f}")
     print(f"F1 Score: {f1:.4f}")
-    print("Confusion Matrix:")
-    print(confusion_mat)
 
+    cm_display = ConfusionMatrixDisplay(confusion_matrix=confusion_mat, display_labels=classes)
+    cm_display.plot(cmap='Blues', values_format='d')
+    plt.title('Confusion Matrix')
+    plt.show()
