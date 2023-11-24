@@ -7,7 +7,7 @@ from torchvision.models import squeezenet1_0, vgg11, SqueezeNet1_0_Weights
 
 from utils import SqueezeNet, VGG11
 
-transform = SqueezeNet1_0_Weights.DEFAULT.transforms
+transform = SqueezeNet1_0_Weights.DEFAULT.transforms()
 
 dataset = ImageFolder(root='./data/Training224r', transform=transform)
 dataloader = DataLoader(dataset, batch_size=64, shuffle=True, num_workers=4)

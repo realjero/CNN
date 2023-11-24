@@ -8,7 +8,7 @@ from torchvision.models import SqueezeNet1_0_Weights
 
 from utils import SqueezeNet, VGG11
 
-transform = SqueezeNet1_0_Weights.DEFAULT.transforms
+transform = SqueezeNet1_0_Weights.DEFAULT.transforms()
 
 testset = ImageFolder(root='./data/Test', transform=transform)
 testloader = DataLoader(testset, batch_size=1, num_workers=4)
@@ -20,7 +20,7 @@ if __name__ == '__main__':
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Running on {device}")
 
-    net = SqueezeNet(weights="squeeze.pth").get_model()
+    net = SqueezeNet(weights="squeeze_rotated.pth").get_model()
     # model = VGG11(weights='vgg_rotated.pth').get_model()
     net.to(device)
     net.eval()
