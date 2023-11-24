@@ -2,6 +2,7 @@ import torch
 from torch.utils.data import DataLoader
 from torchvision import transforms
 from torchvision.datasets import ImageFolder
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix
 
 from utils import SqueezeNet, VGG11
 
@@ -22,15 +23,13 @@ if __name__ == '__main__':
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Running on {device}")
 
-    model = SqueezeNet(weights="squeeze_rotated.pth").get_model()
+    model = SqueezeNet(weights="squeeze.pth").get_model()
     # model = VGG11(weights='vgg_rotated.pth').get_model()
     model.to(device)
     model.eval()
 
-    correct_predictions = 0
-    total_samples = 0
-    class_correct = [0] * len(classes)
-    class_total = [0] * len(classes)
+    all_labels = []
+    all_predictions = []
 
     with torch.no_grad():
         for img, label in testloader:
@@ -42,26 +41,20 @@ if __name__ == '__main__':
             # Get the predicted class
             _, predicted_class = torch.max(output, 1)
 
-            total_samples += 1
-            if predicted_class == label.to(device):
-                correct_predictions += 1
-                class_correct[label] += 1
+            all_labels.extend(label.cpu().numpy())
+            all_predictions.extend(predicted_class.cpu().numpy())
 
-            class_total[label] += 1
+    # Calculate evaluation metrics
+    accuracy = accuracy_score(all_labels, all_predictions)
+    precision = precision_score(all_labels, all_predictions, average='weighted')
+    recall = recall_score(all_labels, all_predictions, average='weighted')
+    f1 = f1_score(all_labels, all_predictions, average='weighted')
+    confusion_mat = confusion_matrix(all_labels, all_predictions)
 
-    print(f"Amount: {len(testloader)}")
+    print(f"Accuracy: {accuracy:.4f}")
+    print(f"Precision: {precision:.4f}")
+    print(f"Recall: {recall:.4f}")
+    print(f"F1 Score: {f1:.4f}")
+    print("Confusion Matrix:")
+    print(confusion_mat)
 
-    accuracy = correct_predictions / total_samples
-    print(f"Accuracy: {accuracy}")
-
-    for i in range(len(classes)):
-        class_accuracy = class_correct[i] / class_total[i] if class_total[i] != 0 else 0
-        print(f"Accuracy for {classes[i]}: {class_accuracy}")
-
-    precision = sum(class_correct) / sum(class_total) if sum(class_total) != 0 else 0
-    recall = accuracy
-    f1_score = 2 * (precision * recall) / (precision + recall) if (precision + recall) != 0 else 0
-
-    print(f"Precision: {precision}")
-    print(f"Recall: {recall}")
-    print(f"F1 Score: {f1_score}")
