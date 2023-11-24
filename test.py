@@ -25,23 +25,23 @@ if __name__ == '__main__':
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Running on {device}")
 
-    model = SqueezeNet(weights="squeeze.pth").get_model()
+    net = SqueezeNet(weights="squeeze.pth").get_model()
     # model = VGG11(weights='vgg_rotated.pth').get_model()
-    model.to(device)
-    model.eval()
+    net.to(device)
+    net.eval()
 
     all_labels = []
     all_predictions = []
 
     with torch.no_grad():
-        for img, label in testloader:
-            img = img.to(device)
-            output = model(img)
+        for y, label in testloader:
+            y = y.to(device)
+            y_hat = net(y)
 
-            probabilities = torch.nn.functional.softmax(output[0], dim=0)
+            probabilities = torch.nn.functional.softmax(y_hat[0], dim=0)
 
             # Get the predicted class
-            _, predicted_class = torch.max(output, 1)
+            _, predicted_class = torch.max(y_hat, 1)
 
             all_labels.extend(label.cpu().numpy())
             all_predictions.extend(predicted_class.cpu().numpy())

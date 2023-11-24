@@ -25,15 +25,15 @@ if __name__ == '__main__':
     print(f"Running on {device}")
 
     # Initialize the model, loss function, and optimizer
-    #   model = squeezenet1_0(num_classes=4)
+    #   net = squeezenet1_0(num_classes=4)
     # Pretrained:
-    model = SqueezeNet().get_model()
-    # model = VGG11().get_model()
+    net = SqueezeNet().get_model()
+    # net = VGG11().get_model()
 
-    model = model.to(device)
+    net = net.to(device)
 
     criterion = nn.CrossEntropyLoss()
-    optimizer = optim.SGD(model.parameters(), lr=0.001, momentum=0.9)
+    optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
 
     plt.ion()
     fig, ax = plt.subplots()
@@ -41,11 +41,11 @@ if __name__ == '__main__':
 
     # Training the model
     for epoch in range(10):
-        for inputs, labels in dataloader:
-            inputs, labels = inputs.to(device), labels.to(device)
+        for y, labels in dataloader:
+            y, labels = y.to(device), labels.to(device)
             optimizer.zero_grad()
-            outputs = model(inputs)
-            loss = criterion(outputs, labels)
+            y_hat = net(y)
+            loss = criterion(y_hat, labels)
             loss.backward()
             optimizer.step()
 
@@ -63,6 +63,6 @@ if __name__ == '__main__':
         print(f'{epoch}: Loss: {losses[-1]}')
 
     print('Finished Training')
-    torch.save(model.state_dict(), 'squeeze_rotated.pth')
+    torch.save(net.state_dict(), 'squeeze_rotated.pth')
     plt.ioff()
     plt.show()
