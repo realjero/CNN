@@ -10,7 +10,7 @@ class SqueezeNet:
         self.net.classifier[1] = nn.Conv2d(512, 4, kernel_size=(1, 1))
 
         if weights:
-            self.net.load_state_dict(torch.load(weights, map_location=torch.device('cpu')))
+            self.net.load_state_dict(torch.load(weights))
 
     def get_model(self):
         return self.net
