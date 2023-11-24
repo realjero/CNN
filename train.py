@@ -2,19 +2,12 @@ import torch
 from matplotlib import pyplot as plt
 from torch import nn, optim
 from torch.utils.data import DataLoader
-from torchvision import transforms
 from torchvision.datasets import ImageFolder
-from torchvision.models import squeezenet1_0, vgg11
+from torchvision.models import squeezenet1_0, vgg11, SqueezeNet1_0_Weights
 
 from utils import SqueezeNet, VGG11
 
-transform = transforms.Compose([
-    transforms.Resize(224),
-    transforms.CenterCrop(224),
-    transforms.AutoAugment(),
-    transforms.ToTensor(),
-    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
-])
+transform = SqueezeNet1_0_Weights.DEFAULT.transforms
 
 dataset = ImageFolder(root='./data/Training224r', transform=transform)
 dataloader = DataLoader(dataset, batch_size=64, shuffle=True, num_workers=4)
