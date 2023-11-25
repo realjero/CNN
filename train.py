@@ -35,7 +35,7 @@ if __name__ == '__main__':
     # validation_losses = []
 
     # Training the model
-    for epoch in range(1):
+    for epoch in range(10):
         for y, label in training_loader:
             # Training
             net.train()
@@ -67,4 +67,4 @@ if __name__ == '__main__':
     plt.legend()
     plt.show()
 
-    torch.save(net.state_dict(), 'squeeze_rotated1.pth')
+    torch.save(net.state_dict(), 'squeeze_rotated.pth')
