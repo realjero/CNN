@@ -3,17 +3,11 @@ from matplotlib import pyplot as plt
 from torch import nn, optim
 from torch.utils.data import DataLoader, random_split
 from torchvision.datasets import ImageFolder
-from torchvision.models import squeezenet1_0, vgg11
-from torchvision import transforms
+from torchvision.models import squeezenet1_0, vgg11, SqueezeNet1_0_Weights
 
 from utils import SqueezeNet, VGG11
 
-transform = transforms.Compose([
-    transforms.Resize(224),
-    transforms.CenterCrop(224),
-    transforms.ToTensor(),
-    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
-])
+transform = SqueezeNet1_0_Weights.DEFAULT.transforms()
 
 training_set = ImageFolder(root='./data/Training224r', transform=transform)
 # train, valid = random_split(training_set, [int(len(training_set) / 5 * 4), int(len(training_set) / 5)])
@@ -41,7 +35,7 @@ if __name__ == '__main__':
     # validation_losses = []
 
     # Training the model
-    for epoch in range(10):
+    for epoch in range(1):
         for y, label in training_loader:
             # Training
             net.train()
@@ -73,4 +67,4 @@ if __name__ == '__main__':
     plt.legend()
     plt.show()
 
-    torch.save(net.state_dict(), 'squeeze_rotated.pth')
+    torch.save(net.state_dict(), 'squeeze_rotated1.pth')

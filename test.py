@@ -4,16 +4,11 @@ from torch.utils.data import DataLoader
 from torchvision.datasets import ImageFolder
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix
 from sklearn.metrics import ConfusionMatrixDisplay
-from torchvision import transforms
+from torchvision.models import SqueezeNet1_0_Weights
 
 from utils import SqueezeNet, VGG11
 
-transform = transforms.Compose([
-    transforms.Resize(224),
-    transforms.CenterCrop(224),
-    transforms.ToTensor(),
-    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
-])
+transform = SqueezeNet1_0_Weights.DEFAULT.transforms()
 
 testset = ImageFolder(root='./data/Test', transform=transform)
 testloader = DataLoader(testset, batch_size=1, num_workers=4)
