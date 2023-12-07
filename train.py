@@ -1,11 +1,11 @@
 import torch
 from matplotlib import pyplot as plt
 from torch import nn, optim
-from torch.utils.data import DataLoader, random_split
+from torch.utils.data import DataLoader
 from torchvision.datasets import ImageFolder
-from torchvision.models import squeezenet1_0, vgg11, SqueezeNet1_0_Weights
+from torchvision.models import SqueezeNet1_0_Weights
 
-from utils import SqueezeNet, VGG11
+from utils import SqueezeNet
 
 transform = SqueezeNet1_0_Weights.DEFAULT.transforms()
 
@@ -19,7 +19,6 @@ if __name__ == '__main__':
     print(f"Running on {device}")
 
     net = SqueezeNet().get_model()
-    # net = VGG11().get_model()
 
     net = net.to(device)
 

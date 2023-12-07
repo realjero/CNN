@@ -6,11 +6,11 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_sc
 from sklearn.metrics import ConfusionMatrixDisplay
 from torchvision.models import SqueezeNet1_0_Weights
 
-from utils import SqueezeNet, VGG11
+from utils import SqueezeNet
 
 transform = SqueezeNet1_0_Weights.DEFAULT.transforms()
 
-testset = ImageFolder(root='./data/Test', transform=transform)
+testset = ImageFolder(root='./data/bonustest2', transform=transform)
 testloader = DataLoader(testset, batch_size=1, num_workers=4)
 
 classes = ['cup', 'key', 'pencil', 'scissor']
@@ -20,8 +20,7 @@ if __name__ == '__main__':
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Running on {device}")
 
-    net = SqueezeNet(weights="squeeze_rotated.pth").get_model()
-    # net = VGG11(weights='vgg_rotated.pth').get_model()
+    net = SqueezeNet(weights="squeeze_rotated100.pth").get_model()
     net.to(device)
     net.eval()
 
