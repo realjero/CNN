@@ -20,7 +20,7 @@ if __name__ == '__main__':
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Running on {device}")
 
-    net = SqueezeNet(weights="squeeze_rotated100.pth").get_model()
+    net = SqueezeNet(weights="squeeze_rotated.pth").get_model()
     net.to(device)
     net.eval()
 
