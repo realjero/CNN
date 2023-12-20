@@ -15,8 +15,14 @@ training_loader = DataLoader(training_set, batch_size=64, shuffle=True, num_work
 
 if __name__ == '__main__':
     # Check if CUDA (GPU) is available
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    print(f"Running on {device}")
+    device = (
+        "cuda"
+        if torch.cuda.is_available()
+        else "mps"
+        if torch.backends.mps.is_available()
+        else "cpu"
+    )
+    print(f"Using {device} device")
 
     net = SqueezeNet().get_model()
 

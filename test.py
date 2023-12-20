@@ -17,8 +17,14 @@ classes = ['cup', 'key', 'pencil', 'scissor']
 
 if __name__ == '__main__':
     # Check if CUDA (GPU) is available
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    print(f"Running on {device}")
+    device = (
+        "cuda"
+        if torch.cuda.is_available()
+        else "mps"
+        if torch.backends.mps.is_available()
+        else "cpu"
+    )
+    print(f"Using {device} device")
 
     net = SqueezeNet(weights="squeeze_rotated.pth").get_model()
     net.to(device)
